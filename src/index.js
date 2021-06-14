@@ -6,15 +6,14 @@ import App from './App';
 
 let render = state => {
     ReactDOM.render(
-        <App state={state} addCounter={addCounter}/>,
+        <App state={state} addCounter={addCounter} />,
         document.getElementById('root')
     );
 };
 
 render();
 
-store$.subscribe(state => {
-        render(state)
-    }
-);
-
+store$.subscribe(state =>
+{
+    render(state)
+});
