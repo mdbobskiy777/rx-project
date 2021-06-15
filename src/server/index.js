@@ -25,10 +25,9 @@ app.get('/users',
             console.log(totalUsersCount);
             const leftValue = request.query.currentPage * request.query.count - (request.query.count);
             const portion = request.query.count * 1;
-            await collection.find().skip(leftValue).limit(portion).toArray( function (err, results) {
-                console.log(results);
-                response.send({users: results, totalUsersCount: totalUsersCount});
-            });
+            const results = await collection.find().skip(leftValue).limit(portion).toArray();
+            console.log(results);
+            response.send({users: results, totalUsersCount: totalUsersCount});
         });
     });
 
