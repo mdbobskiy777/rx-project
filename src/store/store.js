@@ -1,14 +1,15 @@
 import { Subject } from 'rxjs';
 import { scan, startWith, shareReplay } from 'rxjs/operators';
+import { userAPI as usersAPI } from "../api/api";
 
 export const initialState = {
-    counter: 42
+    users:[],
+    totalUsersCount:0
 };
 
 const handlers = {
-    INCREMENT: state => ({...state, counter: state.counter + 1}),
-    DECREMENT: state => ({...state, counter: state.counter - 1}),
-    ADD: (state, action) => ({...state, counter: state.counter + action.payload}),
+    SET_USERS: (state, action) => ({...state, users: action.users}),
+    SET_TOTAL_USERS_COUNT: (state, action) => ({...state, totalUsersCount: action.totalUsersCount}),
     DEFAULT: state => state
 };
 
@@ -31,8 +32,15 @@ function createStore(rootReducer) {
     return store$;
 }
 
-export const addCounter = value => {
-    store$.dispatch({type: 'ADD', payload: value});
+const setUsers = (users) => ({type: 'SET_USERS', users});
+
+export const setTotalUsersCount = (totalUsersCount) => ({type: 'SET_TOTAL_USERS_COUNT',
+    totalUsersCount: totalUsersCount});
+
+export const getUsers = async (currentPage, pageSize) => {
+    let data = await usersAPI.getUsers(currentPage, pageSize);
+    store$.dispatch(setUsers(data.users));
+    store$.dispatch(setTotalUsersCount(data.totalUsersCount));
 };
 
 export const store$ = createStore(reducer);

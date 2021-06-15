@@ -1,14 +1,10 @@
 import MainPage from './components/MainPage';
+import {getUsers} from "./store/store";
 
 const App = props => {
     return (
         <div>
-            {props.state &&
-            <div>Count: {props.state.counter}</div>
-            }
-            <div>
-                <MainPage state={props.state} addCounter={props.addCounter}/>
-            </div>
+            <MainPage state={props.state} getUsers={props.getUsers}/>
         </div>
     );
 }
